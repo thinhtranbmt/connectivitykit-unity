@@ -1,0 +1,30 @@
+{
+  "name": "com.mycore.connectivitykit",
+  "version": "0.1.0",
+  "displayName": "ConnectivityKit",
+  "description": "Knows whether the game server is reachable, not just whether Wi-Fi is on: an HTTP probe that only counts a direct 200 (captive portals read as offline), a watcher with Online/Offline state, shared probes, offline backoff and WaitForOnlineAsync for offline queues.",
+  "unity": "2022.3",
+  "documentationUrl": "https://github.com/thinhtranbmt/connectivitykit-unity#readme",
+  "changelogUrl": "https://github.com/thinhtranbmt/connectivitykit-unity/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/thinhtranbmt/connectivitykit-unity/blob/main/LICENSE.md",
+  "dependencies": {
+    "com.cysharp.unitask": "2.5.10"
+  },
+  "keywords": [
+    "network",
+    "connectivity",
+    "offline",
+    "reachability",
+    "unitask"
+  ],
+  "author": {
+    "name": "MyCore"
+  },
+  "samples": [
+    {
+      "displayName": "Basic",
+      "description": "A watcher probing a local Nakama /healthcheck, logging every state change.",
+      "path": "Samples~/Basic"
+    }
+  ]
+}
