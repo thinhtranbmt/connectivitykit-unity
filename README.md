@@ -56,12 +56,17 @@ while (queue.HasItems)
         return; // cancelled: nothing thrown, the queue keeps its items
     }
     RpcResult<SubmitRes> result = await rpc.CallAsync<SubmitReq, SubmitRes>("exam.submit", queue.Peek());
+    if (result.IsOk)
+    {
+        queue.Dequeue(); // only a confirmed submission leaves the queue
+        continue;
+    }
     if (result.Status == RpcStatus.Network || result.Status == RpcStatus.Timeout)
     {
         await watcher.CheckNowAsync(); // the server vanished again: Offline until a probe succeeds
         continue;
     }
-    queue.Dequeue();
+    return; // signed out, server error, bad payload: keep the item, surface it, try again later
 }
 ```
 

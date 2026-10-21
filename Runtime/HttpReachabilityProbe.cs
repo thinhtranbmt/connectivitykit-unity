@@ -22,10 +22,11 @@ namespace ConnectivityKit
 
         public async UniTask<ReachabilityVerdict> ProbeAsync(CancellationToken ct)
         {
+            // CancelAfterSlim runs on the player loop, so the abort happens on the main thread. Its
+            // timer is disposed before the token source, or it would cancel a disposed source later.
             using (var cts = CancellationTokenSource.CreateLinkedTokenSource(ct))
+            using (cts.CancelAfterSlim(_settings.Timeout, DelayType.Realtime))
             {
-                // CancelAfterSlim runs on the player loop, so the abort happens on the main thread.
-                cts.CancelAfterSlim(_settings.Timeout, DelayType.Realtime);
                 try
                 {
                     long status = await SendAsync(UnityWebRequest.kHttpVerbHEAD, cts.Token);

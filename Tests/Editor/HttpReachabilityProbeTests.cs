@@ -177,6 +177,18 @@ namespace ConnectivityKit.Tests
         });
 
         [UnityTest]
+        public IEnumerator HttpProbe_TimeoutTimerAfterSuccess_LogsNothing() => UniTask.ToCoroutine(async () =>
+        {
+            Assert.AreEqual(ReachabilityVerdict.Reachable,
+                await Probe(timeout: TimeSpan.FromMilliseconds(200)).ProbeAsync(CancellationToken.None));
+
+            // Outlive the probe's timeout: a timer left running would cancel a disposed token and log.
+            await UniTask.Delay(600, DelayType.Realtime);
+
+            LogAssert.NoUnexpectedReceived();
+        });
+
+        [UnityTest]
         public IEnumerator HttpProbe_Cancelled_IsUnreachableWithoutThrowing() => UniTask.ToCoroutine(async () =>
         {
             _server.Handler = _server.Hold;
